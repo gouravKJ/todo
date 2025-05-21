@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todo List</title>
+</head>
+<style>
+ * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f4f8;
+    color: #333;
+    margin: 0;
+    padding: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  h1, h2 {
+    text-align: center;
+    color: #222;
+  }
+
+  a {
+    display: block;
+    text-align: center;
+    margin-top: 2rem;
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  a:hover {
+    color: #1c3d7a;
+  }
+
+  /* Task List */
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    background: white;
+    margin-bottom: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+  }
+  li:nth-child(1) { animation-delay: 0.1s; }
+  li:nth-child(2) { animation-delay: 0.2s; }
+  li:nth-child(3) { animation-delay: 0.3s; }
+  li:nth-child(4) { animation-delay: 0.4s; }
+  li:nth-child(5) { animation-delay: 0.5s; }
+
+  /* Task text with status */
+  li > span {
+    flex-grow: 1;
+    font-size: 1.1rem;
+  }
+
+  /* Completed tasks style */
+  li.done span {
+    text-decoration: line-through;
+    color: #888;
+  }
+
+  /* Buttons */
+  form {
+    margin: 0 0 0 10px;
+  }
+
+  button {
+    background-color: #4a90e2;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #357ABD;
+  }
+
+  /* Input form */
+  form[action="/task"] input[type="text"] {
+    padding: 0.5rem 1rem;
+    width: 70%;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  form[action="/task"] input[type="text"]:focus {
+    outline: none;
+    border-color: #4a90e2;
+  }
+
+  /* Animation keyframes */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Home page */
+  .home-container {
+    background: white;
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    box-shadow: 0 6px 18px rgb(0 0 0 / 0.12);
+    text-align: center;
+    animation: popIn 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  .home-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #4a90e2;
+  }
+
+  .home-container p {
+    font-size: 1.3rem;
+    color: #555;
+  }
+
+  @keyframes popIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+</style>
+<body>
+  <h1>My Tasks</h1>
+  <ul>
+    <% tasks.forEach(task => { %>
+      <li>
+        <%= task.title %> - <%= task.status %>
+      <form action="/task/delete/<%= task.id %>" method="POST" style="display:inline;">
+  <button type="submit">Delete</button>
+</form>
+
+        <% if (task.status !== 'done') { %>
+       <form action="/task/complete/<%= task.id %>" method="POST" style="display:inline;">
+  <button type="submit">Complete</button>
+</form>
+
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+
+  <h2>Add a new task</h2>
+  <form action="/task" method="POST">
+    <input type="text" name="title" required />
+    <button type="submit">Add</button>
+  </form>
+
+  <br>
+  <a href="/">Go to Home</a>
+</body>
+</html>
